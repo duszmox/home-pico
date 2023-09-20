@@ -36,4 +36,79 @@ export const homeRouter = createTRPCRouter({
       }
       return { device };
     }),
+  getDevice: publicProcedure
+    .input(
+      z.object({
+        uuid: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { uuid } = input;
+      const device = await db.pico.findFirst({
+        where: {
+          uuid,
+        },
+      });
+      if (device) {
+        return { device };
+      } else {
+        throw new Error("Device not found");
+      }
+    }),
+  openGate: publicProcedure
+    .input(
+      z.object({
+        uuid: z.string(),
+        gate: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { uuid } = input;
+      const device = await db.pico.findFirst({
+        where: {
+          uuid,
+        },
+      });
+      if (device) {
+        // make a request to the device
+        const respose = await fetch(
+          `http://${device.ip}/gate/open/${input.gate}`,
+        );
+        if (respose.ok) {
+          return { message: "Gate opened" };
+        } else {
+          throw new Error("Error opening gate");
+        }
+      } else {
+        throw new Error("Device not found");
+      }
+    }),
+  closeGate: publicProcedure
+    .input(
+      z.object({
+        uuid: z.string(),
+        gate: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { uuid } = input;
+      const device = await db.pico.findFirst({
+        where: {
+          uuid,
+        },
+      });
+      if (device) {
+        // make a request to the device
+        const respose = await fetch(
+          `http://${device.ip}/gate/close/${input.gate}`,
+        );
+        if (respose.ok) {
+          return { message: "Gate closed" };
+        } else {
+          throw new Error("Error closing gate");
+        }
+      } else {
+        throw new Error("Device not found");
+      }
+    }),
 });
