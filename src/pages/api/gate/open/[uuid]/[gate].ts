@@ -21,13 +21,13 @@ const ipHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!gate) {
       return res.status(400).json({ error: "Missing gate" });
     }
-    if (typeof gate !== "number") {
+    if (typeof gate !== "string" && typeof gate !== "number") {
       return res.status(400).json({ error: "Invalid gate" });
     }
 
     const { message } = await caller.home.openGate({
       uuid: uuid as string,
-      gate: gate as number,
+      gate: typeof gate === "string" ? parseInt(gate) : gate,
     });
 
     return res.status(200).json({ message: message });

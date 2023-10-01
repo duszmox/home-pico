@@ -66,7 +66,7 @@ export const homeRouter = createTRPCRouter({
       const { uuid } = input;
       const device = await db.pico.findFirst({
         where: {
-          uuid,
+          uuid: uuid,
         },
       });
       if (device) {
