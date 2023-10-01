@@ -12,8 +12,7 @@ const ipHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const ctx = createTRPCContext({ req, res });
   const caller = appRouter.createCaller(ctx);
   try {
-    const { uuid } = req.query;
-    const ip = requestIp.getClientIp(req);
+    const { uuid, ip } = req.query;
 
     if (!uuid) {
       return res.status(400).json({ error: "Missing uuid" });
