@@ -14,13 +14,13 @@ FROM node:lts as runner
 WORKDIR /pico
 ENV NODE_ENV production
 # If you are using a custom next.config.js file, uncomment this line.
+COPY --from=builder /pico/src/env.mjs ./src/env.mjs
 COPY --from=builder /pico/next.config.mjs ./
 COPY --from=builder /pico/public ./public
 COPY --from=builder /pico/.next ./.next
 COPY --from=builder /pico/node_modules ./node_modules
 COPY --from=builder /pico/package.json ./package.json
 COPY --from=builder /pico/.env ./.env
-COPY --from=builder /pico/src/env.mjs ./env.mjs
 
 # copy the prisma folder
 EXPOSE 3000
