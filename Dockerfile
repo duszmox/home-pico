@@ -20,6 +20,7 @@ COPY --from=builder /pico/.next ./.next
 COPY --from=builder /pico/node_modules ./node_modules
 COPY --from=builder /pico/package.json ./package.json
 COPY --from=builder /pico/.env ./.env
+COPY --from=builder /pico/src/env.mjs ./env.mjs
 
 # copy the prisma folder
 EXPOSE 3000
