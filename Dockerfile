@@ -14,7 +14,7 @@ FROM node:lts as runner
 WORKDIR /pico
 ENV NODE_ENV production
 # If you are using a custom next.config.js file, uncomment this line.
-COPY --from=builder /pico/next.config.js ./
+COPY --from=builder /pico/next.config.mjs ./
 COPY --from=builder /pico/public ./public
 COPY --from=builder /pico/.next ./.next
 COPY --from=builder /pico/node_modules ./node_modules
