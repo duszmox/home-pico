@@ -3,21 +3,11 @@ services:
   client:
     image: pico-frontend
     ports:
-      - "81:3000"
+      - "8070:3000"
     restart: always
     container_name: pico-frontend
     networks:
       - pico
-  caddy:
-    ports:
-      - "8069:80"
-    restart: always
-    container_name: pico-caddy
-    networks:
-      - pico
-      - caddy-external
-    #Dockerfile.caddy is the Dockerfile for the Caddy container.
-    image: pico-caddy
 volumes:
   db:
 networks:
