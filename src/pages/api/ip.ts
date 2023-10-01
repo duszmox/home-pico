@@ -31,9 +31,6 @@ const ipHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       uuid,
       ip,
     });
-    while (device === null) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
 
     return res.status(200).json({ device: device });
   } catch (err) {

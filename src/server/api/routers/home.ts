@@ -12,7 +12,7 @@ export const homeRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const { uuid, ip } = input;
-      const device = await db.pico.findFirst({
+      let device = await db.pico.findFirst({
         where: {
           uuid,
         },
@@ -27,7 +27,7 @@ export const homeRouter = createTRPCRouter({
           },
         });
       } else {
-        await db.pico.create({
+        device = await db.pico.create({
           data: {
             uuid,
             ip,
