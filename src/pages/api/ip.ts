@@ -3,6 +3,7 @@ import { appRouter } from "../../server/api/root";
 import { createTRPCContext } from "../../server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { getHTTPStatusCodeFromError } from "@trpc/server/http";
+import requestIp from "request-ip";
 
 const ipHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "GET") {
@@ -12,12 +13,8 @@ const ipHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const caller = appRouter.createCaller(ctx);
   try {
     const { uuid } = req.query;
-    let ip = req.headers["x-real-ip"] as string;
+    const ip = requestIp.getClientIp(req);
 
-    const forwardedFor = req.headers["x-forwarded-for"] as string;
-    if (!ip && forwardedFor) {
-      ip = forwardedFor?.split(",").at(0) ?? "Unknown";
-    }
     if (!uuid) {
       return res.status(400).json({ error: "Missing uuid" });
     }
