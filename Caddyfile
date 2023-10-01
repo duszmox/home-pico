@@ -1,0 +1,8 @@
+hp.tapric.com:80 {
+    tls {
+        dns cloudflare tQQiKQSN7hd-QEC7zvFvA_aAmi6WqZlLDOfc-wbx
+    }
+    route {
+        reverse_proxy http://157.90.160.155:8069
+    }
+}
