@@ -111,4 +111,42 @@ export const homeRouter = createTRPCRouter({
         throw new Error("Device not found");
       }
     }),
+  regMobile: publicProcedure
+    .input(
+      z.object({
+        uuid: z.string(),
+        password: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { uuid } = input;
+      const device = await db.pico.findFirst({
+        where: {
+          uuid,
+        },
+      });
+      if (device) {
+        if (
+          device.password === undefined ||
+          device.password === "" ||
+          device.password === null
+        ) {
+          await db.pico.update({
+            where: {
+              uuid: device.uuid,
+            },
+            data: {
+              password: input.password,
+            },
+          });
+          return { message: "Password set" };
+        } else if (device.password === input.password) {
+          return { message: "Password correct" };
+        } else {
+          throw new Error("Password incorrect");
+        }
+      } else {
+        throw new Error("Device not found");
+      }
+    }),
 });

@@ -16,4 +16,5 @@ model Pico {
     updatedAt DateTime @updatedAt
     ip        String
     uuid      String   @unique
+    password  String?
 }
